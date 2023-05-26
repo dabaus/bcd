@@ -1,19 +1,18 @@
-
 public class Main {
     public static void main(String[] args) {
         {
-            var encoded = encodeDCD(1337);
+            var encoded = endcodeBCD(1337);
             var decoded = decodeBCD(encoded);
-            System.out.println("Encoded and decoded: %d".formatted(decoded));
+            System.out.printf("Encoded and decoded: %d%n", decoded);
         }
         {
-            var encoded = encodeDCD(-42);
+            var encoded = endcodeBCD(-42);
             var decoded = decodeBCD(encoded);
-            System.out.println("Encoded and decoded: %d".formatted(decoded));
+            System.out.printf("Encoded and decoded: %d%n", decoded);
         }
     }
 
-    public static byte[] encodeDCD(int number) {
+    public static byte[] endcodeBCD(int number) {
         var numberAsString =  Integer.toString(number).replaceAll("-", "") ;
         var noDigits = numberAsString.length();
 
@@ -24,7 +23,7 @@ public class Main {
             numberAsString = "0" + numberAsString;
         }
 
-        var bcdByte = new byte[(noDigits /= 2) + 1];
+        var bcdByte = new byte[(noDigits / 2) + 1];
         var n = 0;
         var chars =  numberAsString.toCharArray();
         for(int i=0; i<bcdByte.length;i++) {
@@ -40,7 +39,7 @@ public class Main {
     }
 
     private static byte char2Byte(char c) {
-       return (byte)((c - '0') & 0x0F);
+        return (byte)((c - '0') & 0x0F);
     }
     public static int decodeBCD(byte[] bcdByte) {
         int result = 0;
@@ -48,24 +47,24 @@ public class Main {
 
         // Handle last byte
         var lastIndex = bcdByte.length-1;
-        int lastUpper = (bcdByte[lastIndex] & 0xF0) >> 4;
-        int lastLower = bcdByte[lastIndex] & 0x0F;
+        int msbLast = (bcdByte[lastIndex] & 0xF0) >> 4;
+        int lsbLast = bcdByte[lastIndex] & 0x0F;
 
-        result += lastUpper * pos;
+        result += msbLast * pos;
         pos *= 10;
 
         for (int i=bcdByte.length-2; i >= 0; i--) {
-            int upper = (bcdByte[i] & 0xF0) >> 4;
-            int lower = bcdByte[i] & 0x0F;
-            
-            result += upper * pos;
+            int msb = (bcdByte[i] & 0xF0) >> 4;
+            int lsb = bcdByte[i] & 0x0F;
+
+            result += lsb * pos;
             pos *= 10;
-            result += lower * pos;
+            result += msb * pos;
             pos *= 10;
         }
 
         // Check if the last nibble indicates negation
-        if (lastLower == 0xD) {
+        if (lsbLast == 0xD) {
             result *= -1;
         }
         return result;
