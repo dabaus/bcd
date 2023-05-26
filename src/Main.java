@@ -1,17 +1,15 @@
 public class Main {
     public static void main(String[] args) {
-        // {
-        //     var encoded = endcodeBCD(1337);
-        //     var decoded = decodeBCD(encoded);
-        //     System.out.printf("Encoded and decoded: %d%n", decoded);
-        // }
-        // {
-        //     var encoded = endcodeBCD(-42);
-        //     var decoded = decodeBCD(encoded);
-        //     System.out.printf("Encoded and decoded: %d%n", decoded);
-        // }
-
-        System.out.println((1337 / 10) % 10);
+        {
+            var encoded = endcodeBCD(1337);
+            var decoded = decodeBCD(encoded);
+            System.out.printf("Encoded and decoded: %d%n", decoded);
+        }
+        {
+            var encoded = endcodeBCD(-42);
+            var decoded = decodeBCD(encoded);
+            System.out.printf("Encoded and decoded: %d%n", decoded);
+        }
     }
 
     public static byte[] endcodeBCD(int number) {
