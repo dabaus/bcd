@@ -48,24 +48,24 @@ public class Main {
 
         // Handle last byte
         var lastIndex = bcdByte.length-1;
-        int msbLast = (bcdByte[lastIndex] & 0xF0) >> 4;
-        int lsbLast = bcdByte[lastIndex] & 0x0F;
+        int lastUpper = (bcdByte[lastIndex] & 0xF0) >> 4;
+        int lastLower = bcdByte[lastIndex] & 0x0F;
 
-        result += msbLast * pos;
+        result += lastUpper * pos;
         pos *= 10;
 
         for (int i=bcdByte.length-2; i >= 0; i--) {
-            int msb = (bcdByte[i] & 0xF0) >> 4;
-            int lsb = bcdByte[i] & 0x0F;
+            int upper = (bcdByte[i] & 0xF0) >> 4;
+            int lower = bcdByte[i] & 0x0F;
             
-            result += lsb * pos;
+            result += upper * pos;
             pos *= 10;
-            result += msb * pos;
+            result += lower * pos;
             pos *= 10;
         }
 
         // Check if the last nibble indicates negation
-        if (lsbLast == 0xD) {
+        if (lastLower == 0xD) {
             result *= -1;
         }
         return result;
